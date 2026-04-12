@@ -2,23 +2,42 @@
 {% block title %}Login | SOS Alert{% endblock %}
 {% block content %}
 <section class="card auth-card">
-    <h1>User Login</h1>
-    <p class="muted">Use your username or email and password.</p>
+    <div style="text-align: center; margin-bottom: 32px;">
+        <div style="font-size: 3rem; margin-bottom: 16px;">🔐</div>
+        <h1 style="margin: 0 0 8px;">Welcome Back</h1>
+        <p class="muted" style="font-size: 0.95rem; margin: 0;">Sign in to your SOS Emergency Account</p>
+    </div>
+
     <form method="post" class="form-stack">
         {% csrf_token %}
         {% if form.non_field_errors %}
-            <div class="message error">{{ form.non_field_errors|striptags }}</div>
+            <div class="message error">
+                <strong>❌ Login Error:</strong> {{ form.non_field_errors|striptags }}
+            </div>
         {% endif %}
-        <p>
-            <label for="id_username">Username or Email:</label>
-            {{ form.username }}
-        </p>
-        <p>
-            <label for="id_password">Password:</label>
-            {{ form.password }}
-        </p>
-        <button type="submit" class="btn btn-primary">Sign In</button>
+        
+        <div>
+            <label for="id_username" style="display: block; margin-bottom: 8px; font-weight: 600;">📧 Email</label>
+            <input type="email" name="username" id="id_username" placeholder="your.email@example.com" required style="width: 100%;" />
+        </div>
+
+        <div>
+            <label for="id_password" style="display: block; margin-bottom: 8px; font-weight: 600;">🔑 Password</label>
+            <input type="password" name="password" id="id_password" placeholder="Enter your password" required style="width: 100%;" />
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="padding: 14px 16px; font-size: 1.05rem; margin-top: 8px; width: 100%;">
+            ✓ Sign In
+        </button>
     </form>
-    <p class="muted">Need an account? <a href="{% url 'register' %}">Register here</a>.</p>
+
+    <div style="margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--border); text-align: center;">
+        <p class="muted" style="margin: 0; font-size: 0.95rem;">
+            Don't have an account? 
+            <a href="{% url 'register' %}" style="color: var(--primary); font-weight: 700; text-decoration: none;">
+                Create one now →
+            </a>
+        </p>
+    </div>
 </section>
 {% endblock %}

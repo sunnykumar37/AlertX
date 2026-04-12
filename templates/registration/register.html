@@ -2,12 +2,67 @@
 {% block title %}Register | SOS Alert{% endblock %}
 {% block content %}
 <section class="card auth-card">
-    <h1>Create Account</h1>
+    <div style="text-align: center; margin-bottom: 32px;">
+        <div style="font-size: 3rem; margin-bottom: 16px;">🚨</div>
+        <h1 style="margin: 0 0 8px;">Create Your Account</h1>
+        <p class="muted" style="font-size: 0.95rem; margin: 0;">Join AlertX - Your emergency lifeline</p>
+    </div>
+
     <form method="post" class="form-stack">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">Create Account</button>
+        
+        <div>
+            <label for="id_username" style="display: block; margin-bottom: 8px; font-weight: 600;">👤 Username</label>
+            <input type="text" name="username" id="id_username" placeholder="Choose a username" required style="width: 100%;" />
+            {% if form.username.errors %}
+                <div class="message error" style="margin-top: 6px; font-size: 0.9rem;">
+                    {{ form.username.errors }}
+                </div>
+            {% endif %}
+        </div>
+
+        <div>
+            <label for="id_email" style="display: block; margin-bottom: 8px; font-weight: 600;">📧 Email</label>
+            <input type="email" name="email" id="id_email" placeholder="your.email@example.com" required style="width: 100%;" />
+            {% if form.email.errors %}
+                <div class="message error" style="margin-top: 6px; font-size: 0.9rem;">
+                    {{ form.email.errors }}
+                </div>
+            {% endif %}
+        </div>
+
+        <div>
+            <label for="id_password1" style="display: block; margin-bottom: 8px; font-weight: 600;">🔑 Password</label>
+            <input type="password" name="password1" id="id_password1" placeholder="Create a strong password" required style="width: 100%;" />
+            {% if form.password1.errors %}
+                <div class="message error" style="margin-top: 6px; font-size: 0.9rem;">
+                    {{ form.password1.errors }}
+                </div>
+            {% endif %}
+        </div>
+
+        <div>
+            <label for="id_password2" style="display: block; margin-bottom: 8px; font-weight: 600;">🔐 Confirm Password</label>
+            <input type="password" name="password2" id="id_password2" placeholder="Confirm your password" required style="width: 100%;" />
+            {% if form.password2.errors %}
+                <div class="message error" style="margin-top: 6px; font-size: 0.9rem;">
+                    {{ form.password2.errors }}
+                </div>
+            {% endif %}
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="padding: 14px 16px; font-size: 1.05rem; margin-top: 12px; width: 100%;">
+            ✓ Create Account
+        </button>
     </form>
-    <p class="muted">Already have an account? <a href="{% url 'login' %}">Login</a>.</p>
+
+    <div style="margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--border); text-align: center;">
+        <p class="muted" style="margin: 0; font-size: 0.95rem;">
+            Already have an account? 
+            <a href="{% url 'login' %}" style="color: var(--primary); font-weight: 700; text-decoration: none;">
+                Sign in instead →
+            </a>
+        </p>
+    </div>
 </section>
 {% endblock %}

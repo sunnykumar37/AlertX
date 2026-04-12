@@ -4,87 +4,97 @@
 {% block content %}
 <header class="topbar">
     <div>
-        <h1>SOS Emergency Dashboard</h1>
-        <p class="muted">Hi {{ request.user.username }}, stay safe.</p>
+        <h1 style="margin: 0 0 6px;">SOS Emergency Dashboard</h1>
+        <p class="muted" style="margin: 0;">👋 Hi {{ request.user.username }}, stay safe and prepared.</p>
     </div>
     <form method="post" action="{% url 'logout' %}">
         {% csrf_token %}
-        <button type="submit" class="btn">Logout</button>
+        <button type="submit" class="btn" style="padding: 10px 16px;">🚪 Logout</button>
     </form>
 </header>
 
 <section class="grid">
     <article class="card setup-card" id="emergencySetupCard">
         <div class="setup-header">
-            <h2>Emergency Setup</h2>
-            <span id="permissionStatusBadge" class="status-badge status-not-enabled">Not Enabled</span>
+            <div>
+                <h2 style="margin-bottom: 4px;">⚙️ Emergency Setup</h2>
+                <p class="muted" style="margin: 0; font-size: 0.9rem;">Enable permissions for instant SOS</p>
+            </div>
+            <span id="permissionStatusBadge" class="status-badge status-not-enabled">⏸ Not Enabled</span>
         </div>
-        <p id="permissionStatusText" class="muted">Enable camera and location now so SOS works instantly during emergencies.</p>
+        <p id="permissionStatusText" class="muted" style="margin: 12px 0;">Enable camera and location now so SOS works instantly during emergencies.</p>
         <p id="permissionMessage" class="message hidden"></p>
         <div class="setup-actions">
-            <button type="button" id="enablePermissionsBtn" class="btn btn-primary">Enable Now</button>
-            <button type="button" id="retryPermissionsBtn" class="btn hidden">Retry</button>
+            <button type="button" id="enablePermissionsBtn" class="btn btn-primary">🎯 Enable Now</button>
+            <button type="button" id="retryPermissionsBtn" class="btn hidden">♻️ Retry</button>
         </div>
     </article>
 
     <article class="card sos-card">
-        <h2>Emergency Trigger</h2>
+        <h2 style="margin-bottom: 4px;">🚨 Emergency Trigger</h2>
+        <p class="muted" style="margin: 0 0 12px; font-size: 0.9rem;">One-tap SOS with photo & location</p>
         <video id="cameraPreview" autoplay playsinline muted class="camera-preview"></video>
         <canvas id="captureCanvas" class="hidden"></canvas>
         <button id="sosButton" class="sos-button">SOS</button>
-        <p id="sosStatus" class="muted">Press SOS to capture photo and location.</p>
+        <p id="sosStatus" class="muted" style="font-size: 0.9rem;">Press SOS to capture photo and location.</p>
     </article>
 
     <article class="card">
-        <h2>Emergency Emails</h2>
+        <h2 style="margin-bottom: 4px;">📧 Emergency Contacts</h2>
+        <p class="muted" style="margin: 0 0 12px; font-size: 0.9rem;">Save emails to receive alerts</p>
         <form method="post" class="form-inline">
             {% csrf_token %}
             <input type="hidden" name="action" value="add_contact" />
-            <input type="email" name="email" placeholder="contact@example.com" required />
+            <input type="email" name="email" placeholder="📩 contact@example.com" required />
             <label class="inline-checkbox"><input type="checkbox" name="is_primary" /> Primary</label>
-            <button type="submit" class="btn btn-primary">Save</button>
+            <button type="submit" class="btn btn-primary">✓ Save</button>
         </form>
 
         {% if contacts %}
             <ul class="list">
                 {% for contact in contacts %}
                     <li>
-                        <span>{{ contact.email }} {% if contact.is_primary %}(Primary){% endif %}</span>
+                        <span>{{ contact.email }} {% if contact.is_primary %}<strong>(Primary)</strong>{% endif %}</span>
                         <form method="post" class="confirm-delete-form" data-confirm-message="Delete this emergency contact?" onsubmit="return confirm('Delete this emergency contact?');">
                             {% csrf_token %}
                             <input type="hidden" name="action" value="delete_contact" />
                             <input type="hidden" name="contact_id" value="{{ contact.id }}" />
-                            <button class="btn btn-danger" type="submit">Delete</button>
+                            <button class="btn btn-danger" type="submit" style="padding: 6px 10px; font-size: 0.9rem;">🗑 Delete</button>
                         </form>
                     </li>
                 {% endfor %}
             </ul>
         {% else %}
-            <p class="muted">No emergency contacts yet. Add at least one email.</p>
+            <p class="muted">No emergency contacts yet. Add at least one email to receive SOS alerts.</p>
         {% endif %}
     </article>
 
-    <article class="card history-card">
-        <h2>Recent SOS History</h2>
+    <article class="card">
+        <h2 style="margin-bottom: 4px;">📍 Recent SOS History</h2>
+        <p class="muted" style="margin: 0 0 12px; font-size: 0.9rem;">Track your emergency alerts</p>
         {% if alerts %}
             <ul class="list vertical">
                 {% for alert in alerts %}
                     <li>
-                        <span>{{ alert.timestamp|date:'Y-m-d H:i:s' }}</span>
+                        <div style="flex: 1;">
+                            <span style="font-weight: 600;">⏰ {{ alert.timestamp|date:'M d, Y - H:i' }}</span>
+                        </div>
                         <div class="history-actions">
-                            <a href="{{ alert.maps_link }}" target="_blank" rel="noreferrer">Open Map</a>
+                            <a href="{{ alert.maps_link }}" target="_blank" rel="noreferrer" style="color: var(--primary); text-decoration: none; font-weight: 600;">
+                                🗺 Map
+                            </a>
                             <form method="post" class="confirm-delete-form" data-confirm-message="Delete this SOS history item?" onsubmit="return confirm('Delete this SOS history item?');">
                                 {% csrf_token %}
                                 <input type="hidden" name="action" value="delete_alert" />
                                 <input type="hidden" name="alert_id" value="{{ alert.id }}" />
-                                <button type="submit" class="icon-btn" title="Delete history" aria-label="Delete history">&#128465;</button>
+                                <button type="submit" class="icon-btn" title="Delete history" aria-label="Delete history">🗑</button>
                             </form>
                         </div>
                     </li>
                 {% endfor %}
             </ul>
         {% else %}
-            <p class="muted">No alerts yet.</p>
+            <p class="muted">No alerts yet. Your SOS history will appear here.</p>
         {% endif %}
     </article>
 </section>
