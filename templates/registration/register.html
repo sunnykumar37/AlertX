@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block title %}Register | SOS Alert{% endblock %}
+{% block content %}
+<section class="card auth-card">
+    <h1>Create Account</h1>
+    <form method="post" class="form-stack">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Create Account</button>
+    </form>
+    <p class="muted">Already have an account? <a href="{% url 'login' %}">Login</a>.</p>
+</section>
+{% endblock %}

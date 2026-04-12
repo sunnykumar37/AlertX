@@ -1,0 +1,291 @@
+:root {
+    --bg: #f7f5ef;
+    --text: #1d2433;
+    --muted: #5d677a;
+    --card: #ffffff;
+    --primary: #0f5c76;
+    --danger: #c22b2b;
+    --border: #dde3ec;
+    --shadow: 0 16px 40px rgba(18, 45, 77, 0.12);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: "Segoe UI", "Trebuchet MS", sans-serif;
+    color: var(--text);
+    background: radial-gradient(circle at 15% 20%, #fff7cf 0%, #f7f5ef 38%, #e7eef7 100%);
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 24px;
+    position: relative;
+    z-index: 2;
+}
+
+.bg-orb {
+    position: fixed;
+    width: 320px;
+    height: 320px;
+    border-radius: 50%;
+    filter: blur(28px);
+    z-index: 1;
+    opacity: 0.4;
+}
+
+.orb-1 {
+    top: -80px;
+    left: -60px;
+    background: #f1c977;
+}
+
+.orb-2 {
+    bottom: -120px;
+    right: -50px;
+    background: #9ec6e3;
+}
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 18px;
+    box-shadow: var(--shadow);
+}
+
+.auth-card {
+    max-width: 520px;
+    margin: 40px auto;
+}
+
+h1,
+h2 {
+    margin-top: 0;
+}
+
+.form-stack p {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+input,
+button {
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    padding: 10px 12px;
+    font-size: 1rem;
+}
+
+.btn {
+    cursor: pointer;
+    background: white;
+}
+
+.btn-primary {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
+.btn-danger {
+    background: var(--danger);
+    color: white;
+    border-color: var(--danger);
+}
+
+.setup-card {
+    grid-column: span 2;
+}
+
+.setup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
+.setup-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
+}
+
+.status-badge {
+    font-size: 0.85rem;
+    font-weight: 700;
+    border-radius: 999px;
+    padding: 6px 12px;
+    border: 1px solid transparent;
+}
+
+.status-enabled {
+    background: #e7f7e8;
+    color: #1c7c35;
+    border-color: #9ad8a8;
+}
+
+.status-not-enabled {
+    background: #ffe9e9;
+    color: #a11a1a;
+    border-color: #ffb1b1;
+}
+
+.message.success {
+    background: #e7f7e8;
+    border-color: #9ad8a8;
+    color: #1c7c35;
+}
+
+.sos-card {
+    grid-column: span 2;
+    text-align: center;
+}
+
+.sos-button {
+    margin-top: 14px;
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    border: 8px solid #f7b6b6;
+    background: radial-gradient(circle at 35% 30%, #ff8787, #d81313);
+    color: white;
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    box-shadow: 0 20px 40px rgba(216, 19, 19, 0.35);
+}
+
+.sos-button:active {
+    transform: scale(0.97);
+}
+
+.camera-preview {
+    display: block;
+    width: min(100%, 420px);
+    margin: 0 auto;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    background: #000;
+}
+
+.hidden {
+    display: none;
+}
+
+.form-inline {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+}
+
+.form-inline input[type="email"] {
+    flex: 1;
+    min-width: 220px;
+}
+
+.inline-checkbox {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    color: var(--muted);
+}
+
+.list {
+    list-style: none;
+    padding: 0;
+    margin: 12px 0 0;
+}
+
+.list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid var(--border);
+    padding: 10px 0;
+}
+
+.vertical li {
+    align-items: flex-start;
+}
+
+.history-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.icon-btn {
+    border: 1px solid #e8b0b0;
+    background: #fff5f5;
+    color: #b12a2a;
+    padding: 6px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    line-height: 1;
+}
+
+.icon-btn:hover {
+    background: #ffe8e8;
+}
+
+.muted {
+    color: var(--muted);
+}
+
+.messages {
+    margin-bottom: 16px;
+}
+
+.message {
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: #edf2fb;
+    border: 1px solid #d5e0f2;
+}
+
+.message.error {
+    background: #ffe8e8;
+    border-color: #ffcaca;
+}
+
+@media (max-width: 860px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
+
+    .sos-card {
+        grid-column: span 1;
+    }
+
+    .setup-card {
+        grid-column: span 1;
+    }
+
+    .sos-button {
+        width: 150px;
+        height: 150px;
+    }
+}

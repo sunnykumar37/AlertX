@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}Login | SOS Alert{% endblock %}
+{% block content %}
+<section class="card auth-card">
+    <h1>User Login</h1>
+    <p class="muted">Use your username or email and password.</p>
+    <form method="post" class="form-stack">
+        {% csrf_token %}
+        {% if form.non_field_errors %}
+            <div class="message error">{{ form.non_field_errors|striptags }}</div>
+        {% endif %}
+        <p>
+            <label for="id_username">Username or Email:</label>
+            {{ form.username }}
+        </p>
+        <p>
+            <label for="id_password">Password:</label>
+            {{ form.password }}
+        </p>
+        <button type="submit" class="btn btn-primary">Sign In</button>
+    </form>
+    <p class="muted">Need an account? <a href="{% url 'register' %}">Register here</a>.</p>
+</section>
+{% endblock %}
