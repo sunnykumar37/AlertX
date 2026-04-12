@@ -167,18 +167,6 @@ function setupElements() {
     };
 }
 
-function initializeDeleteConfirmations() {
-    const forms = document.querySelectorAll(".confirm-delete-form");
-    forms.forEach((form) => {
-        form.addEventListener("submit", (event) => {
-            const message = form.getAttribute("data-confirm-message") || "Are you sure you want to delete this item?";
-            if (!window.confirm(message)) {
-                event.preventDefault();
-            }
-        });
-    });
-}
-
 async function initCamera() {
     try {
         if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
@@ -340,5 +328,3 @@ if (enablePermissionsBtn) {
 if (retryPermissionsBtn) {
     retryPermissionsBtn.addEventListener("click", runPermissionSetup);
 }
-
-initializeDeleteConfirmations();
