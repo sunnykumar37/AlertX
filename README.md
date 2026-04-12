@@ -1,6 +1,6 @@
-# SOS Emergency Alert System (Django + PostgreSQL)
+# AlertX - SOS Emergency Alert System (Django + PostgreSQL)
 
-Production-ready SOS Emergency Alert System built with Django backend and HTML/CSS/JavaScript frontend.
+SOS Emergency Alert System built with Django backend and HTML/CSS/JavaScript frontend.
 
 ## Features
 
@@ -95,27 +95,52 @@ Use Gmail SMTP with App Password:
 - `EMAIL_HOST_USER=youremail@gmail.com`
 - `EMAIL_HOST_PASSWORD=<gmail-app-password>`
 
-## Render Deployment (Free Tier)
+## Deployment Note
 
-This repo includes:
+Render-specific files were removed because this project is currently intended for local/PostgreSQL usage only.
 
-- `render.yaml`
-- `Procfile`
-- `build.sh`
+You can still deploy later to any platform by adding platform-specific config files when needed.
 
-### Steps
+## Docker & Cloud Deployment
 
-1. Push project to GitHub.
-2. Create a new Render Blueprint deployment from repo.
-3. Ensure environment variables are set (especially email settings and hosts).
-4. Deploy.
+This project is designed to be containerized and deployed to cloud platforms:
 
-## Important Note About PostgreSQL Port 5433 on Render
+### Containerization
 
-This project enforces `DB_PORT=5433` by default. If your managed Render PostgreSQL instance uses a different port, either:
+When ready, create `Dockerfile` and `docker-compose.yml` for:
+- Multi-stage Docker build (builder + runtime)
+- PostgreSQL service container
+- Django application service
+- Environment variable support via `.env` file
 
-- Provide a PostgreSQL instance that listens on 5433, or
-- Override `DB_PORT` in Render environment variables to the assigned port.
+### Supported Cloud Platforms
+
+Deploy to any of the following:
+
+- **AWS** (ECS, App Runner, or EC2)
+- **Azure** (Container Instances, App Service, or AKS)
+- **Google Cloud** (Cloud Run or App Engine)
+- **DigitalOcean** (App Platform or Docker registry)
+- **Heroku** (alternative after Render)
+- **Any Docker-compatible platform**
+
+### Pre-Deployment Checklist
+
+Before containerizing:
+- ✅ `requirements.txt` includes all dependencies
+- ✅ `.env` file excluded via `.gitignore`
+- ✅ PostgreSQL connectivity tested locally
+- ✅ Gmail SMTP credentials secured
+- ✅ Static files collectible via WhiteNoise
+
+### Deployment Steps (When Ready)
+
+1. Create `Dockerfile` with multi-stage build
+2. Create `docker-compose.yml` for local testing
+3. Create platform-specific deployment config (CloudFormation, ARM template, etc.)
+4. Build and test Docker image locally
+5. Push to container registry (Docker Hub, ECR, ACR, etc.)
+6. Deploy to chosen cloud platform
 
 ## App Routes
 
@@ -128,4 +153,4 @@ This project enforces `DB_PORT=5433` by default. If your managed Render PostgreS
 
 - Auth-protected dashboard and SOS endpoint
 - CSRF token for form/AJAX requests
-- Secure cookie + SSL redirects when `RENDER=true`
+- HTTPS required in production for camera and geolocation permissions
