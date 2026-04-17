@@ -325,6 +325,19 @@ input:focus {
     padding: 10px 0;
 }
 
+.contact-tag {
+    display: inline-block;
+    margin-left: 8px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #e8f4fb 0%, #d7ecf8 100%);
+    border: 1px solid #b4d7ea;
+    color: #0f5c76;
+    font-size: 0.75rem;
+    font-weight: 700;
+    vertical-align: middle;
+}
+
 .vertical li {
     align-items: flex-start;
 }

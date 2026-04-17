@@ -54,7 +54,10 @@
             <ul class="list">
                 {% for contact in contacts %}
                     <li>
-                        <span>{{ contact.email }} {% if contact.is_primary %}<strong>(Primary)</strong>{% endif %}</span>
+                        <span>
+                            {{ contact.email }}
+                            {% if contact.is_primary %}<strong>(Primary)</strong>{% endif %}
+                        </span>
                         <form method="post" class="confirm-delete-form" data-confirm-message="Delete this emergency contact?" onsubmit="return confirm('Delete this emergency contact?');">
                             {% csrf_token %}
                             <input type="hidden" name="action" value="delete_contact" />
@@ -77,7 +80,13 @@
                 {% for alert in alerts %}
                     <li>
                         <div style="flex: 1;">
-                            <span style="font-weight: 600;">⏰ {{ alert.timestamp|date:'M d, Y - H:i' }}</span>
+                            <span
+                                class="history-local-time"
+                                data-timestamp="{{ alert.timestamp|date:'c' }}"
+                                style="font-weight: 600;"
+                            >
+                                ⏰ {{ alert.timestamp|date:'M d, Y - H:i' }}
+                            </span>
                         </div>
                         <div class="history-actions">
                             <a href="{{ alert.maps_link }}" target="_blank" rel="noreferrer" style="color: var(--primary); text-decoration: none; font-weight: 600;">
@@ -100,5 +109,5 @@
 </section>
 
 <script defer src="{% static 'js/permissions.js' %}?v=3"></script>
-<script defer src="{% static 'js/dashboard.js' %}?v=3"></script>
+<script defer src="{% static 'js/dashboard.js' %}?v=4"></script>
 {% endblock %}

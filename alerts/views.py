@@ -19,6 +19,41 @@ from .forms import EmailOrUsernameAuthenticationForm, RegisterForm
 from .models import EmergencyContact, SOSAlert
 
 
+def _normalize_primary_contacts(user):
+	"""Guarantee that at most one emergency contact is marked as primary."""
+	primary_contacts = list(
+		EmergencyContact.objects.filter(user=user, is_primary=True).order_by("created_at", "id")
+	)
+	if len(primary_contacts) <= 1:
+		return
+
+	keep_primary = primary_contacts[0]
+	EmergencyContact.objects.filter(user=user, is_primary=True).exclude(pk=keep_primary.pk).update(is_primary=False)
+
+
+def _ensure_registered_email_contact(user):
+	"""Keep the account email visible in emergency contacts when available."""
+	user_email = (user.email or "").strip().lower()
+	if not user_email:
+		return
+
+	contact, created = EmergencyContact.objects.get_or_create(
+		user=user,
+		email=user_email,
+		defaults={"is_primary": not user.emergency_contacts.exists()},
+	)
+
+	if created:
+		_normalize_primary_contacts(user)
+		return
+
+	if not user.emergency_contacts.exclude(pk=contact.pk).exists() and not contact.is_primary:
+		contact.is_primary = True
+		contact.save(update_fields=["is_primary"])
+
+	_normalize_primary_contacts(user)
+
+
 def login_view(request):
 	if request.user.is_authenticated:
 		return redirect("dashboard")
@@ -49,6 +84,7 @@ def register_view(request):
 		form = RegisterForm(request.POST)
 		if form.is_valid():
 			user = form.save()
+			_ensure_registered_email_contact(user)
 			login(request, user)
 			messages.success(request, "Welcome. Your account has been created.")
 			return redirect("dashboard")
@@ -78,6 +114,7 @@ def dashboard_view(request):
 
 				if is_primary:
 					EmergencyContact.objects.filter(user=request.user).exclude(pk=contact.pk).update(is_primary=False)
+				_normalize_primary_contacts(request.user)
 				messages.success(request, "Emergency contact saved.")
 			else:
 				messages.error(request, "Please provide a valid email.")
@@ -94,6 +131,8 @@ def dashboard_view(request):
 
 		return redirect("dashboard")
 
+	_ensure_registered_email_contact(request.user)
+	_normalize_primary_contacts(request.user)
 	contacts = EmergencyContact.objects.filter(user=request.user)
 	alerts = SOSAlert.objects.filter(user=request.user)[:10]
 	return render(request, "alerts/dashboard.html", {"contacts": contacts, "alerts": alerts})

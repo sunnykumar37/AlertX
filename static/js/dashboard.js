@@ -167,6 +167,33 @@ function setupElements() {
     };
 }
 
+function formatHistoryTimestamps() {
+    const timestampNodes = document.querySelectorAll(".history-local-time[data-timestamp]");
+
+    timestampNodes.forEach((node) => {
+        const isoValue = node.getAttribute("data-timestamp");
+        if (!isoValue) {
+            return;
+        }
+
+        const parsedDate = new Date(isoValue);
+        if (Number.isNaN(parsedDate.getTime())) {
+            return;
+        }
+
+        const formatted = new Intl.DateTimeFormat(undefined, {
+            month: "short",
+            day: "2-digit",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: false,
+        }).format(parsedDate);
+
+        node.textContent = `⏰ ${formatted}`;
+    });
+}
+
 async function initCamera() {
     try {
         if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
@@ -317,6 +344,7 @@ async function initializeDashboard() {
 }
 
 if (sosButton) {
+    formatHistoryTimestamps();
     initializeDashboard();
     sosButton.addEventListener("click", sendSOS);
 }
