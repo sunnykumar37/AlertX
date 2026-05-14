@@ -54,27 +54,27 @@ Key variables:
 - `EMAIL_HOST_PASSWORD`
 - `DEFAULT_FROM_EMAIL`
 
-## Docker Run (Recommended)
+## Docker Run
 
-1. Build and start services:
+1. Start the stack:
 
 ```bash
-docker-compose up -d --build
+docker-compose up
 ```
 
-2. Run migrations:
+2. In another terminal, run migrations inside the web container:
 
 ```bash
 docker-compose exec web python manage.py migrate
 ```
 
-3. Create admin user (optional):
+3. Start the Django dev server inside the web container if needed:
 
 ```bash
-docker-compose exec web python manage.py createsuperuser
+docker-compose exec web python manage.py runserver 0.0.0.0:8000
 ```
 
-4. Open app:
+4. Open the app:
 
 - http://localhost:8000
 
@@ -84,19 +84,7 @@ docker-compose exec web python manage.py createsuperuser
 docker-compose down
 ```
 
-## Local Non-Docker Run
-
-If you run Django directly on host (`python manage.py runserver`), set DB host/port for host networking:
-
-- `DB_HOST=localhost`
-- `DB_PORT=5432`
-
-Then run:
-
-```bash
-python manage.py migrate
-python manage.py runserver
-```
+The application is configured to use the PostgreSQL service named `db` inside Docker, so no local PostgreSQL installation is required.
 
 ## Testing
 
@@ -106,7 +94,11 @@ With Docker setup (recommended):
 docker-compose exec web python manage.py test alerts
 ```
 
-If running tests on host machine, ensure `DB_HOST` is resolvable from host (for example `localhost`, not `db`).
+If running tests inside the Docker stack, use:
+
+```bash
+docker-compose exec web python manage.py test alerts
+```
 
 ## Gmail SMTP Setup
 

@@ -23,6 +23,7 @@ services:
     depends_on:
       - db
     environment:
+      DB_ENGINE: postgres
       DB_NAME: sos_db
       DB_USER: postgres
       DB_PASSWORD: postgres

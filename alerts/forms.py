@@ -15,10 +15,13 @@ class EmailOrUsernameAuthenticationForm(AuthenticationForm):
         password = self.cleaned_data.get("password")
 
         if username_or_email and "@" in username_or_email:
-            try:
-                username_or_email = User.objects.get(email__iexact=username_or_email).get_username()
-            except User.DoesNotExist:
-                pass
+            matching_users = User.objects.filter(email__iexact=username_or_email)
+            if matching_users.count() == 1:
+                username_or_email = matching_users.first().get_username()
+            elif matching_users.count() > 1:
+                raise ValidationError(
+                    "Multiple accounts use this email address. Please sign in with your username."
+                )
 
         if username_or_email and password:
             self.user_cache = authenticate(self.request, username=username_or_email, password=password)

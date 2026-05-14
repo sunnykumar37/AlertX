@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY requirements.txt /app/
 
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir --default-timeout=120 --retries=10 -r requirements.txt
 
 COPY . .
 

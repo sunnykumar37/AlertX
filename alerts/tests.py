@@ -62,6 +62,22 @@ class AlertsTests(TestCase):
 		contact = EmergencyContact.objects.get(user=user, email="bob@example.com")
 		self.assertTrue(contact.is_primary)
 
+	def test_login_rejects_ambiguous_email_login(self):
+		self.user.email = "alice@example.com"
+		self.user.save(update_fields=["email"])
+		User.objects.create_user(username="alice2", email="alice@example.com", password="StrongPass123")
+
+		response = self.client.post(
+			reverse("login"),
+			{
+				"username": "alice@example.com",
+				"password": "StrongPass123",
+			},
+		)
+
+		self.assertEqual(response.status_code, 200)
+		self.assertContains(response, "Multiple accounts use this email address")
+
 	def test_dashboard_normalizes_to_single_primary_contact(self):
 		self.client.login(username="alice", password="StrongPass123")
 		first = EmergencyContact.objects.create(user=self.user, email="first@example.com", is_primary=True)
