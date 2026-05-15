@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: alertx-deployment
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: alertx-label
+
+  template:
+    metadata:
+      labels:
+        app: alertx-label
+
+    spec:
+      containers:
+        - name: alertx
+          image: sunnykumar13/alertx-web
+
+          env:
+            - name: POSTGRES_DB
+              value: "sos_db"
+
+            - name: POSTGRES_USER
+              value: "postgres"
+
+            - name: POSTGRES_PASSWORD
+              value: "postgres"
+
+            - name: POSTGRES_HOST
+              value: "db"
+
+            - name: POSTGRES_PORT
+              value: "5432"
+
+            - name: ALLOWED_HOSTS
+              value: "127.0.0.1,localhost,ab9f7b8097e7a4a55a9e3893e0fc6d87-1257294334.ap-south-1.elb.amazonaws.com"
+
+          ports:
+            - containerPort: 8000
