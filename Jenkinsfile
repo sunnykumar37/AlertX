@@ -10,10 +10,8 @@ pipeline{
         }
         stage("build"){
             steps{
-                dir('docker'){
                     echo 'building project image'
-                    sh 'docker build -t sunnykumar13/alertx-web:${BUILD_NUMBER} .'
-                }
+                    sh "docker build -t sunnykumar13/alertx-web:${BUILD_NUMBER} ."
             }
         }
 
