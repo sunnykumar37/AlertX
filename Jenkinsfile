@@ -25,8 +25,8 @@ pipeline{
             sh '''
             echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
 
-            docker push suryasuraj/psbackend:${BUILD_NUMBER}
-            docker push suryasuraj/psfrontend:${BUILD_NUMBER}
+            docker push sunnykumar13/alertx-web:${BUILD_NUMBER}
+            docker push sunnykumar13/alertx-web:${BUILD_NUMBER}
             '''
         }
     }
