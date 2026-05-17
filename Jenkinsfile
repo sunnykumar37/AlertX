@@ -22,14 +22,19 @@ pipeline{
                     usernameVariable: 'DOCKER_USER',
                     passwordVariable: 'DOCKER_PASS'
                 )]) {
-            sh '''
-            echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
-
-            docker push sunnykumar13/alertx-web:${BUILD_NUMBER}
-            docker push sunnykumar13/alertx-web:${BUILD_NUMBER}
-            '''
+                        sh ''' echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+                        docker push sunnykumar13/alertx-web:${BUILD_NUMBER} '''
+                }
+            }
         }
-    }
-}
+        stage("Deploy to Kubernetes") { 
+            steps { 
+                sh ''' 
+                kubectl set image deployment/alertx-deployment \ 
+                alertx=sunnykumar13/alertx-web:${BUILD_NUMBER} 
+                kubectl rollout status deployment/alertx-deployment 
+                ''' 
+            } 
+        }
     }
 }
