@@ -7,7 +7,14 @@ pipeline{
                 git branch: 'main', url: 'https://github.com/sunnykumar37/AlertX.git'
                 echo "cloning done"
             }
-
+        }
+        stage("build"){
+            steps{
+                dir('docker'){
+                    echo 'building project image'
+                    sh 'docker build -t sunnykumar13/alertx-web:${BUILD_NUMBER} .'
+                }
+            }
         }
 
     }
