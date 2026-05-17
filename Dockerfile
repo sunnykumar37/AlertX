@@ -10,4 +10,4 @@ COPY . .
 
 EXPOSE 8000
 
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["sh", "-c", "until python manage.py migrate; do echo 'Waiting for database...'; sleep 2; done; python manage.py runserver 0.0.0.0:8000"]

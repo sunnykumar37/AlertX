@@ -38,7 +38,7 @@ spec:
               value: "5432"
 
             - name: ALLOWED_HOSTS
-              value: "127.0.0.1,localhost,ab9f7b8097e7a4a55a9e3893e0fc6d87-1257294334.ap-south-1.elb.amazonaws.com"
+              value: "*"
 
           ports:
             - containerPort: 8000
