@@ -14,6 +14,22 @@ pipeline{
                     sh "docker build -t sunnykumar13/alertx-web:${BUILD_NUMBER} ."
             }
         }
+        stage("Push Images") {
+            steps {
+                withCredentials([
+                    usernamePassword(
+                    credentialsId: 'docker_cred',
+                    usernameVariable: 'DOCKER_USER',
+                    passwordVariable: 'DOCKER_PASS'
+                )]) {
+            sh '''
+            echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
 
+            docker push suryasuraj/psbackend:${BUILD_NUMBER}
+            docker push suryasuraj/psfrontend:${BUILD_NUMBER}
+            '''
+        }
+    }
+}
     }
 }
