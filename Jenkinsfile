@@ -27,14 +27,16 @@ pipeline{
                 }
             }
         }
-        stage("Deploy to Kubernetes") { 
-            steps { 
-                sh ''' 
-                kubectl set image deployment/alertx-deployment \ 
-                alertx=sunnykumar13/alertx-web:${BUILD_NUMBER} 
-                kubectl rollout status deployment/alertx-deployment 
-                ''' 
-            } 
+        stage("Deploy to Kubernetes") {
+            steps {
+
+                sh '''
+                kubectl set image deployment/alertx-deployment alertx=sunnykumar13/alertx-web:${BUILD_NUMBER}
+
+                kubectl rollout status deployment/alertx-deployment
+           '''
+            }
         }
+
     }
 }
