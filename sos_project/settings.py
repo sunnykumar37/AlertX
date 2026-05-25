@@ -16,8 +16,11 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'django-insecure-local-dev-only-chan
 
 DEBUG = os.getenv('DEBUG', 'True').lower() == 'true'
 
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
-
+ALLOWED_HOSTS = [
+    "127.0.0.1",
+    "localhost",
+    "a53563a2000e94732902c29c636b606f-1995846683.ap-south-1.elb.amazonaws.com"
+]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
