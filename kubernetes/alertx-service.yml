@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: alertx-service
 spec:
-  type: LoadBalancer
+  type: LoadBalancer   # services are exposed using loadbalancer which provide a ip 
 
   selector:
     app: alertx-label

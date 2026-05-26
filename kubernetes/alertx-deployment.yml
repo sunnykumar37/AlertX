@@ -5,7 +5,7 @@ metadata:
   name: alertx-deployment
 
 spec:
-  replicas: 1
+  replicas: 1  # Number of pod replicas working 
 
   selector:
     matchLabels:
@@ -17,7 +17,7 @@ spec:
         app: alertx-label
 
     spec:
-      containers:
+      containers:   # Created a container which includes names and their values 
         - name: alertx
           image: sunnykumar13/alertx-web
 
