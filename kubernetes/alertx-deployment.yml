@@ -17,7 +17,7 @@ spec:
         app: alertx-label
 
     spec:
-      containers:   # Created a container which includes names and their values 
+      containers:
         - name: alertx
           image: sunnykumar13/alertx-web
 

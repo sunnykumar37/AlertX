@@ -2,7 +2,7 @@ pipeline{
 agent any
 
 stages{
-       # it clones from repo
+
     stage("git clone"){
         steps{
             echo "cloning start"
@@ -13,7 +13,7 @@ stages{
             echo "cloning done"
         }
     }
-   # it builds  the docker img 
+
     stage("build"){
         steps{
             echo 'building project image'
@@ -21,7 +21,7 @@ stages{
             sh "docker build -t sunnykumar13/alertx-web:${BUILD_NUMBER} ."
         }
     }
-    #take form hub and push 
+
     stage("Push Images") {
 
         steps {
@@ -44,7 +44,7 @@ stages{
             }
         }
     }
-    #img in form of pods
+
     stage("Deploy to Kubernetes") {
 
         steps {
