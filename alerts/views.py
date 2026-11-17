@@ -77,21 +77,31 @@ def logout_view(request):
 
 
 def register_view(request):
-	if request.user.is_authenticated:
-		return redirect("dashboard")
+    if request.user.is_authenticated:
+        return redirect("dashboard")
 
-	if request.method == "POST":
-		form = RegisterForm(request.POST)
-		if form.is_valid():
-			user = form.save()
-			_ensure_registered_email_contact(user)
-			login(request, user)
-			messages.success(request, "Welcome. Your account has been created.")
-			return redirect("dashboard")
-	else:
-		form = RegisterForm()
+    if request.method == "POST":
+        form = RegisterForm(request.POST)
 
-	return render(request, "registration/register.html", {"form": form})
+        if form.is_valid():
+            try:
+                user = form.save()
+                _ensure_registered_email_contact(user)
+                login(request, user)
+                messages.success(request, "Welcome. Your account has been created.")
+                return redirect("dashboard")
+
+            except Exception as exc:
+                print("REGISTRATION SAVE ERROR:", repr(exc))
+                form.add_error(None, "Account creation failed. Please try again.")
+
+        else:
+            print("REGISTRATION VALIDATION ERRORS:", form.errors.as_json())
+
+    else:
+        form = RegisterForm()
+
+    return render(request, "registration/register.html", {"form": form})
 
 
 @login_required

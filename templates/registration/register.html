@@ -10,7 +10,11 @@
 
     <form method="post" class="form-stack">
         {% csrf_token %}
-        
+        {% if form.non_field_errors %}
+            <div class="message error">
+                {{ form.non_field_errors }}
+            </div>
+        {% endif %}
         <div>
             <label for="id_username" style="display: block; margin-bottom: 8px; font-weight: 600;">👤 Username</label>
             <input type="text" name="username" id="id_username" placeholder="Choose a username" required style="width: 100%;" />
@@ -55,6 +59,12 @@
             ✓ Create Account
         </button>
     </form>
+
+    {% if form.errors %}
+        <div class="message error">
+            {{ form.errors }}
+        </div>
+    {% endif %}
 
     <div style="margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--border); text-align: center;">
         <p class="muted" style="margin: 0; font-size: 0.95rem;">
