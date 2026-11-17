@@ -19,7 +19,8 @@ DEBUG = os.getenv('DEBUG', 'True').lower() == 'true'
 ALLOWED_HOSTS = [
     "127.0.0.1",
     "localhost",
-    "a53563a2000e94732902c29c636b606f-1995846683.ap-south-1.elb.amazonaws.com"
+    "a53563a2000e94732902c29c636b606f-1995846683.ap-south-1.elb.amazonaws.com",
+    "a2e85ba9509214273adf203e825a3c8d-854935813.ap-south-1.elb.amazonaws.com"
 ]
 
 INSTALLED_APPS = [

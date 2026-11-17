@@ -5,7 +5,7 @@ metadata:
   name: alertx-deployment
 
 spec:
-  replicas: 1  # Number of pod replicas working 
+  replicas: 1  
 
   selector:
     matchLabels:

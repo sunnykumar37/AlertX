@@ -54,3 +54,13 @@ Thumbs.db
 
 # Node (if frontend tooling is added later)
 node_modules/
+
+
+
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+*.tfplan
+crash.log
+crash.*.log

@@ -1,83 +1,77 @@
-pipeline{
-agent any
+pipeline {
+    agent any
 
-stages{
-
-    stage("git clone"){
-        steps{
-            echo "cloning start"
-
-            git branch: 'main',
-            url: 'https://github.com/sunnykumar37/AlertX.git'
-
-            echo "cloning done"
-        }
+    environment {
+        IMAGE_NAME = "sunnykumar13/alertx-web"
+        CONTAINER_NAME = "alertx-app"
     }
 
-    stage("build"){
-        steps{
-            echo 'building project image'
+    stages {
 
-            sh "docker build -t sunnykumar13/alertx-web:${BUILD_NUMBER} ."
+        stage('Clone Repository') {
+            steps {
+                echo 'Cloning AlertX repository'
+                checkout scm
+            }
         }
-    }
 
-    stage("Push Images") {
-
-        steps {
-
-            withCredentials([
-
-                usernamePassword(
-                    credentialsId: 'dockerhub',
-                    usernameVariable: 'DOCKER_USER',
-                    passwordVariable: 'DOCKER_PASS'
-                )
-
-            ]) {
+        stage('Build Docker Image') {
+            steps {
+                echo 'Building AlertX Docker image'
 
                 sh '''
-                echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+                    docker build -t ${IMAGE_NAME}:${BUILD_NUMBER} .
+                    docker tag ${IMAGE_NAME}:${BUILD_NUMBER} ${IMAGE_NAME}:latest
+                '''
+            }
+        }
 
-                docker push sunnykumar13/alertx-web:${BUILD_NUMBER}
+        stage('Push Docker Image') {
+            steps {
+                withCredentials([
+                    usernamePassword(
+                        credentialsId: 'dockerhub',
+                        usernameVariable: 'DOCKER_USER',
+                        passwordVariable: 'DOCKER_PASS'
+                    )
+                ]) {
+                    sh '''
+                        echo "$DOCKER_PASS" | docker login \
+                            -u "$DOCKER_USER" --password-stdin
+
+                        docker push ${IMAGE_NAME}:${BUILD_NUMBER}
+                        docker push ${IMAGE_NAME}:latest
+
+                        docker logout
+                    '''
+                }
+            }
+        }
+
+        stage('Deploy on EC2') {
+            steps {
+                sh '''
+                    docker rm -f ${CONTAINER_NAME} || true
+
+                    docker run -d \
+                        --name ${CONTAINER_NAME} \
+                        --restart unless-stopped \
+                        -p 8000:8000 \
+                        ${IMAGE_NAME}:${BUILD_NUMBER}
+
+                    docker ps
                 '''
             }
         }
     }
 
-    stage("Deploy to Kubernetes") {
+    post {
+        success {
+            echo 'AlertX deployed successfully on EC2!'
+        }
 
-        steps {
-
-            sh '''
-            kubectl set image deployment/alertx-deployment alertx=sunnykumar13/alertx-web:${BUILD_NUMBER}
-
-            kubectl rollout status deployment/alertx-deployment
-            '''
+        failure {
+            echo 'AlertX pipeline failed. Check Jenkins console output.'
         }
     }
-}
-
-post {
-
-    success {
-
-        emailext(
-            subject: "✅ Pipeline SUCCESS - Build #${BUILD_NUMBER}",
-            body: "Build #${BUILD_NUMBER} completed successfully.",
-            to: "snarwal2005@gmail.com"
-        )
-    }
-
-    failure {
-
-        emailext(
-            subject: "❌ Pipeline FAILED - Build #${BUILD_NUMBER}",
-            body: "Build #${BUILD_NUMBER} FAILED. Check Jenkins logs.",
-            to: "snarwal2005@gmail.com"
-        )
-    }
-}
-
-
 }
