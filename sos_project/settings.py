@@ -14,13 +14,14 @@ if load_dotenv is not None:
 
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'django-insecure-local-dev-only-change-me')
 
-DEBUG = os.getenv('DEBUG', 'True').lower() == 'true'
+DEBUG = os.getenv('DEBUG', 'False').lower() == 'true'
 
 ALLOWED_HOSTS = [
     "127.0.0.1",
     "localhost",
+    "16.4.34.14",
     "a53563a2000e94732902c29c636b606f-1995846683.ap-south-1.elb.amazonaws.com",
-    "a2e85ba9509214273adf203e825a3c8d-854935813.ap-south-1.elb.amazonaws.com"
+    "a2e85ba9509214273adf203e825a3c8d-854935813.ap-south-1.elb.amazonaws.com",
 ]
 
 INSTALLED_APPS = [
